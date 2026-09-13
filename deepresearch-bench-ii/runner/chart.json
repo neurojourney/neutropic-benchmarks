@@ -1,0 +1,43 @@
+{
+  "title": "DeepResearch Bench II benchmark",
+  "note": "total score · 132 tasks · 9,430 expert rubrics",
+  "format": "{:.2f}",
+  "rows": [
+    {
+      "system": "Neutropic",
+      "config": "official judge · target 2027",
+      "value": 65.0,
+      "highlight": true,
+      "projected": true,
+      "logo": "neutropic"
+    },
+    {
+      "system": "AI21",
+      "config": "AI21-DeepResearch",
+      "value": 64.38,
+      "logo": "ai21"
+    },
+    {
+      "system": "Dalpha",
+      "config": "Dalpha DeepResearch",
+      "value": 61.01,
+      "logo": "dalpha"
+    },
+    {
+      "system": "WhaleCloud",
+      "config": "DocChain",
+      "value": 60.94,
+      "logo": "whalecloud"
+    },
+    {
+      "system": "iFlow",
+      "config": "iFlow-Researcher",
+      "value": 59.91,
+      "logo": "iflow"
+    }
+  ],
+  "sources": [
+    "Official leaderboard https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html (2026-09)",
+    "Neutropic target: projected, not measured"
+  ]
+}

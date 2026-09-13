@@ -1,0 +1,22 @@
+# ReportBench ablation ladder — python -m app.benchmarks.matrix --config evals/matrix_reportbench.yaml
+# Copy into neutropic2-api/evals/. Data is mounted read-only at /bench in the bench container.
+
+bench: reportbench
+data: /bench/ReportBench/ReportBench_v1.1.jsonl   # ReportBench_v1.1_GT/ must sit next to it
+limit: 10          # smoke — delete for the full 100 tasks
+pause: 10          # academic DBs rate-limit harder than web search
+tag: rb-v1
+out: benchmark_runs
+
+grader:
+  provider: gemini
+  model: null
+
+rows:
+  - {name: basic-search, policy: basic-search, provider: gemini}
+  - {name: full,         policy: full,         provider: gemini}
+  # component ablations — only meaningful on report-style benchmarks
+  - {name: full-no-review,    policy: full, provider: gemini, overrides: {reviewer: false, repair: false}}
+  - {name: full-no-citechain, policy: full, provider: gemini, overrides: {citation_chain: false}}
+  # - {name: full-no-rerank, policy: full, provider: gemini, overrides: {rerank: false}}
+  # - {name: full-no-corpus, policy: full, provider: gemini, overrides: {corpus: false}}

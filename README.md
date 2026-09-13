@@ -46,6 +46,8 @@ SimpleQA is a short-answer factuality benchmark. Answers are graded
 `correct` / `incorrect` / `not attempted`; F1 rewards abstaining over
 guessing. Current best published score: **95.3%** (Liner Pro + Reasoning).
 
+![SimpleQA benchmark chart](./simpleqa/chart.png)
+
 ### Measured — L1 internal, fixed 100-question subset
 
 Subset: `simpleqa_subset100` (topic-stratified, deterministic sample of the
@@ -79,7 +81,7 @@ Reading the table:
 | Run | Tier | Scope | Target accuracy | Basis |
 |-----|------|-------|-----------------|-------|
 | `matrix-v4` | L1 | subset 100, `full` | ≥ 0.94 | abstain instead of guessing after failed verification; two-source cross-check for dates; fetch fallback reader |
-| `official-v1` | L2 | full 4,326 + SimpleQA Verified 1,000 | ≥ 0.95 | official 3-way grading prompt, grader model stated |
+| `official-v1` | L2 | full 4,326 + SimpleQA Verified 1,000 | ≥ 0.955 (above the current best 0.953) | official 3-way grading prompt, grader model stated |
 
 ### Configuration
 
@@ -109,6 +111,8 @@ Published reference points (ReportBench paper):
 Recall is low for every system because expert surveys cite hundreds of
 papers; no published system holds precision and recall up at the same time.
 That is the axis Neutropic targets.
+
+![ReportBench benchmark chart](./reportbench/chart.png)
 
 ### Projected — not yet measured
 
@@ -148,6 +152,8 @@ Leaderboard reference points (2026-09):
 Presentation is saturated (> 90% for every top system); the race is on
 recall and analysis.
 
+![DeepResearch Bench II benchmark chart](./deepresearch-bench-ii/chart.png)
+
 ### Projected — not yet measured
 
 | Run | Tier | Row | Total | Recall | Analysis | Presentation | Basis |
@@ -174,6 +180,8 @@ DS-1000), Data Analysis (DiscoveryBench) and End-to-End Discovery (E2E-Bench,
 E2E-Bench-Hard) — run through the `agent-eval` harness with standardized
 tools, traceable logs and cost reporting.
 
+![AstaBench benchmark chart](./astabench/chart.png)
+
 Leaderboard reference points (Ai2, 2026-04 update):
 
 | System | Overall | $/problem |
@@ -193,24 +201,54 @@ a time, starting where the product already has assets:
 | 1 | Literature Understanding | `asta-lit-v1` (2027 H2) | L1 validation split → L2 test | ≥ category SOTA | same retrieval / evidence / citation stack as ReportBench |
 | 2 | Data Analysis (DiscoveryBench) | `asta-data-v1` | L1 → L2 | ≥ SOTA − 5 pp | structured statistics tools + code execution (internal StatsBench: 12/12 tasks, method accuracy 1.00) |
 | 3 | Code & Execution | `asta-code-v1` | L1 → L2 | ≥ SOTA − 10 pp | sandboxed local kernel; CORE-Bench / SUPER need containerized repos |
-| 4 | End-to-End Discovery | `asta-e2e-v1` (2028) | L2 → L3 | overall **≥ 58%** | design → analysis → paper-writing chain in one turn |
+| 4 | End-to-End Discovery | `asta-e2e-v1` (2028) | L2 → L3 | overall **≥ 58.5%** (above the current best 58.0) | design → analysis → paper-writing chain in one turn |
 
 Both the standard-tools track (Asta Scientific Corpus search) and the
 custom-tools track (Neutropic's own academic search fan-out) will be reported.
+
+## Reproducing a run
+
+Adapters and evaluators live in the Neutropic API repository
+(`neutropic2-api/app/benchmarks/`); each `<benchmark>/runner/README.md` has
+the exact commands, dataset location and output mapping. Common ground:
+
+```bash
+python -m app.benchmarks.run --bench <simpleqa|reportbench|deepresearch> \
+  --data <dataset> --policy <model-only|basic-search|generic-rag|full> \
+  --provider gemini --grader-provider gemini --limit 10 --tag <run-tag>
+python -m app.benchmarks.matrix --config evals/<matrix>.yaml     # whole ablation ladder
+```
+
+Runs execute inside the API Docker image with `NEUTROPIC_SEARCH_CACHE=on`
+(record) or `=replay` (deterministic re-run), `NEUTROPIC_EMBED_PROVIDER=off`
+and `NEUTROPIC_WORKDIR_SCOPE=session`; sessions are isolated in a dedicated
+`__benchmarks__` project with project memory disabled. Dataset files are not
+committed here. AstaBench runs through Ai2's `agent-eval` harness instead
+(see `astabench/runner/`).
+
+| Result file | Content |
+|-------------|---------|
+| `<row>.summary.json` | n, grade distribution, accuracy metrics, `agent_performance` (tool success / selection / recovery, latency, tokens, cost), grader, policy overrides |
+| `<tag>_comparison.md` / `.json` | all rows of one run side by side (the ablation ladder) |
+| `<bench>_<policy>_<tag>-<row>.jsonl` | per-item: question, gold, answer, grade, usage, trajectory (added after review) |
 
 ## Folder layout
 
 ```
 neutropic-benchmarks/
 ├── README.md                      # this file — measured vs projected, always labelled
-├── runner/                        # how to reproduce a run (adapters live in the Neutropic API repo)
 ├── simpleqa/
+│   ├── chart.png                  # comparison vs published systems
+│   ├── runner/                    # README, matrix.yaml, chart.json + chart.py + logos/ (renders chart.png)
 │   └── results/<run-tag>/         # <row>.summary.json + <tag>_comparison.{md,json}
 ├── reportbench/
+│   ├── chart.png · runner/        # README, matrix_reportbench.yaml, chart.json + chart.py
 │   └── results/<run-tag>/
 ├── deepresearch-bench-ii/
+│   ├── chart.png · runner/        # README, matrix_deepresearch.yaml, chart.json + chart.py
 │   └── results/<run-tag>/         # + report/<row>/idx-*.md for official submission
 └── astabench/
+    ├── chart.png · runner/        # README (agent-eval solver plan), chart.json + chart.py
     └── results/<run-tag>/         # agent-eval logs (.eval) + scores.json per category
 ```
 
@@ -218,8 +256,13 @@ Each `results/<run-tag>/` folder is one immutable run: per-row summaries with
 grade distribution, accuracy metrics, agent-performance columns (tool success,
 tool selection, recovery, latency, tokens, cost) and the exact policy
 overrides used. Per-item files (question, answer, grade, trajectory) are
-added once reviewed for personal data. A `chart.png` per benchmark is added
-with the first complete ablation ladder.
+added once reviewed for personal data. Each `chart.png` compares Neutropic
+with published systems: a **blue** bar is a measured Neutropic result, a
+**light-blue** bar with a "≥" value is a projected target (its config line
+says `target`), gray bars are published competitor scores. Charts are
+rendered by `runner/chart.py` from `runner/chart.json`, which lists the
+source of every number. Brand marks in `runner/logos/` are trademarks of
+their respective owners and are used for identification only.
 
 ## Citation
 

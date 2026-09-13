@@ -1,0 +1,43 @@
+{
+  "title": "ReportBench benchmark",
+  "note": "reference recall · 100 academic survey tasks",
+  "format": "{:.1f}%",
+  "rows": [
+    {
+      "system": "Neutropic",
+      "config": "+ snowballing · target 2027",
+      "value": 5.0,
+      "highlight": true,
+      "projected": true,
+      "logo": "neutropic"
+    },
+    {
+      "system": "Google",
+      "config": "Gemini Deep Research",
+      "value": 3.6,
+      "logo": "google"
+    },
+    {
+      "system": "OpenAI",
+      "config": "Deep Research",
+      "value": 3.3,
+      "logo": "openai"
+    },
+    {
+      "system": "OpenAI",
+      "config": "o3",
+      "value": 3.1,
+      "logo": "openai"
+    },
+    {
+      "system": "Anthropic",
+      "config": "Claude 4 Sonnet",
+      "value": 2.1,
+      "logo": "anthropic"
+    }
+  ],
+  "sources": [
+    "ReportBench paper (arXiv:2508.15804), Table 2, recall × 100: Gemini DR 0.036, OpenAI DR 0.033, o3 0.031, claude-4-sonnet 0.021",
+    "Neutropic target: projected, not measured"
+  ]
+}

@@ -1,0 +1,48 @@
+# 벤치마크 비교 매트릭스(전략 §18) — python -m app.benchmarks.matrix --config evals/matrix.yaml
+#
+# 행 간 비교가 성립하는 조건(변경 금지):
+#  - data: 모든 행이 같은 고정 서브셋을 푼다.
+#  - grader: 채점은 피험 모델과 무관하게 항상 같은 클라우드 모델.
+# GPU PC 본실행: limit 를 지우고(전체 100문항) 로컬 모델 행의 주석을 푼다.
+
+bench: simpleqa
+data: evals/simpleqa_subset100.csv
+# limit: 2        # 리허설용 — 본실행(2026-08-31 matrix-v2)은 서브셋 전체 100문항
+pause: 5          # 문항 간 초 — 외부 검색 DB rate-limit 페이싱(full 정책)
+tag: matrix-v3    # 결과 파일 접두 — 바꾸면 새 실행, 유지하면 --resume 로 이어짐 (v2 = gemini 채점, v3 = quick-fact 상한 5·복구 훅 이후 full 재측정)
+out: benchmark_runs
+
+grader:
+  provider: gemini   # 채점 고정 — 모든 행을 같은 모델이 채점한다(claude 지출은 의도적으로만).
+                     # 2026-08-31 claude → gemini 로 변경: 그전에 claude 로 채점된 결과 파일과 점수를
+                     # 나란히 놓으려면 그 행들도 다시 채점해야 한다(tag 를 바꿔 새 실행으로).
+  model: null        # null = 프로바이더 기본 모델
+
+rows:
+  # 전략 §18 애블레이션 4행 (Frontier Only / +Basic Search / +Generic RAG / +Neutropic)
+  - {name: model-only,   policy: model-only,   provider: gemini}
+  - {name: basic-search, policy: basic-search, provider: gemini}
+  - {name: generic-rag,  policy: generic-rag,  provider: gemini}
+  - {name: full,         policy: full,         provider: gemini}
+
+  # ── 컴포넌트 애블레이션 행(§18 — full 에서 하나씩 제거; 3행 비교 후 필요 시) ──
+  # - {name: full-no-rerank, policy: full, provider: claude, overrides: {rerank: false}}
+  # - {name: full-no-nudges, policy: full, provider: claude, overrides: {iterative_nudges: false}}
+  # - {name: full-no-corpus, policy: full, provider: claude, overrides: {corpus: false}}
+  # - {name: full-no-planner, policy: full, provider: gemini, overrides: {research_planner: false}}
+  # - {name: full-no-extractor, policy: full, provider: gemini, overrides: {evidence_extractor: false}}
+  # - {name: full-no-graph, policy: full, provider: gemini, overrides: {evidence_graph: false}}
+  # - {name: full-no-policy, policy: full, provider: gemini, overrides: {skill_guidance: false}}
+  # - {name: full-no-backedge, policy: full, provider: gemini, overrides: {repair_backedge: false}}
+  # (reviewer/repair/citation_chain 토글은 리포트형 벤치마크에서 의미가 있다 — SimpleQA 어댑터는 단답 정규화로
+  #  이미 꺼 둔다. ReportBench 매트릭스는 `bench: reportbench`, `data: <path>/ReportBench_v1.1.jsonl` 로 별도
+  #  파일을 두고 아래 행을 쓴다:
+  #  - {name: full-no-review, policy: full, provider: gemini, overrides: {reviewer: false, repair: false}}
+  #  - {name: full-no-citechain, policy: full, provider: gemini, overrides: {citation_chain: false}} )
+
+  # ── GPU PC 로컬 모델 행(도착 후 주석 해제) ─────────────────────────────────
+  # Ollama: 사전 `ollama pull <model>` 필요
+  # - {name: full-ollama, policy: full, provider: ollama, model: "llama3.3:70b"}
+  # vLLM: OpenAI 호환 서버 — 환경변수 OPENAI_BASE_URL=http://localhost:8000/v1,
+  #        OPENAI_API_KEY=vllm(더미) 설정 후 served model 이름을 지정
+  # - {name: full-vllm, policy: full, provider: openai, model: "<served-model>"}

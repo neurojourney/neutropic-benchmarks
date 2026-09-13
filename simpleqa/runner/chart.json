@@ -1,0 +1,45 @@
+{
+  "title": "SimpleQA benchmark",
+  "note": "accuracy · full set 4,326 questions unless noted",
+  "format": "{:.1f}%",
+  "rows": [
+    {
+      "system": "Neutropic",
+      "config": "official run · target 2027",
+      "value": 95.5,
+      "highlight": true,
+      "projected": true,
+      "logo": "neutropic"
+    },
+    {
+      "system": "Liner",
+      "config": "Pro + Reasoning",
+      "value": 95.3,
+      "logo": "liner"
+    },
+    {
+      "system": "Liner",
+      "config": "Pro",
+      "value": 93.7,
+      "logo": "liner"
+    },
+    {
+      "system": "Neutropic",
+      "config": "Gemini 3.1 Pro · subset 100",
+      "value": 90.0,
+      "highlight": true,
+      "logo": "neutropic"
+    },
+    {
+      "system": "Google",
+      "config": "Gemini 3.1 Pro · no tools",
+      "value": 68.0,
+      "logo": "google"
+    }
+  ],
+  "sources": [
+    "Liner: https://www.threads.com/@alexandersyoon/post/DGmVGTdPVLj (Liner Pro 93.7, + Reasoning 95.3)",
+    "Neutropic measured: ../results/matrix-v3/full.summary.json (full), ../results/matrix-v2/model-only.summary.json (Gemini no tools)",
+    "Neutropic target: above current best published score (95.3) on the official full set — projected, not measured"
+  ]
+}

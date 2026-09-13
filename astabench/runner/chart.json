@@ -1,0 +1,49 @@
+{
+  "title": "AstaBench benchmark",
+  "note": "overall score · 11 benchmarks · 4 categories",
+  "format": "{:.1f}%",
+  "rows": [
+    {
+      "system": "Neutropic",
+      "config": "all categories · target 2028",
+      "value": 58.5,
+      "highlight": true,
+      "projected": true,
+      "logo": "neutropic"
+    },
+    {
+      "system": "Anthropic",
+      "config": "Claude Opus 4.7 + ReAct",
+      "value": 58.0,
+      "logo": "anthropic"
+    },
+    {
+      "system": "Anthropic",
+      "config": "Claude Opus 4.6 + ReAct",
+      "value": 55.3,
+      "logo": "anthropic"
+    },
+    {
+      "system": "Anthropic",
+      "config": "Claude Sonnet 4.6 + ReAct",
+      "value": 54.5,
+      "logo": "anthropic"
+    },
+    {
+      "system": "Ai2",
+      "config": "Asta v0",
+      "value": 53.0,
+      "logo": "ai2"
+    },
+    {
+      "system": "OpenAI",
+      "config": "GPT-5.5 + ReAct",
+      "value": 52.9,
+      "logo": "openai"
+    }
+  ],
+  "sources": [
+    "Ai2 AstaBench leaderboard update https://allenai.org/blog/astabench-update-spring-2026 (2026-04)",
+    "Neutropic target: above current best (58.0) — projected, not measured"
+  ]
+}

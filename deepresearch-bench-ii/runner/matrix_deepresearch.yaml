@@ -1,0 +1,20 @@
+# DeepResearch Bench II ladder — python -m app.benchmarks.matrix --config evals/matrix_deepresearch.yaml
+# Copy into neutropic2-api/evals/. Data is mounted read-only at /bench in the bench container.
+
+bench: deepresearch
+data: /bench/DRB2/tasks_and_rubrics.jsonl
+limit: 10          # smoke — delete for all 132 tasks
+pause: 5
+tag: dr-v1
+out: benchmark_runs
+
+grader:
+  provider: gemini   # internal judge; official judge is GPT-5.5 via run_evaluation.py (L2)
+  model: null
+
+rows:
+  - {name: basic-search, policy: basic-search, provider: gemini}
+  - {name: full,         policy: full,         provider: gemini}
+  - {name: full-no-review, policy: full, provider: gemini, overrides: {reviewer: false, repair: false}}
+  # - {name: full-no-planner, policy: full, provider: gemini, overrides: {research_planner: false}}
+  # - {name: full-no-nudges,  policy: full, provider: gemini, overrides: {iterative_nudges: false}}
