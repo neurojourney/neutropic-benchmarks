@@ -228,6 +228,6 @@ with the first complete ablation ladder.
   title  = {Neutropic benchmark results},
   author = {NeuroJourney},
   year   = {2026},
-  url    = {https://github.com/at-inc/aside-benchmarks/tree/main/neutropic-benchmarks}
+  url    = {https://github.com/neurojourney/neutropic-benchmarks}
 }
 ```
