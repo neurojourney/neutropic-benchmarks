@@ -1,0 +1,43 @@
+[
+  {
+    "row": "full",
+    "bench": "simpleqa",
+    "policy": "full",
+    "provider": "gemini",
+    "model": null,
+    "overrides": null,
+    "grader": {
+      "provider": "gemini",
+      "model": null
+    },
+    "data": "evals/simpleqa_subset100.csv",
+    "search_cache": "on",
+    "n": 100,
+    "grades": {
+      "correct": 90,
+      "incorrect": 7,
+      "not_attempted": 3
+    },
+    "mean": 0.9,
+    "metrics": {
+      "accuracy": 0.9,
+      "attempted_rate": 0.97,
+      "accuracy_given_attempted": 0.9278,
+      "f1": 0.9137
+    },
+    "agent_performance": {
+      "n": 100,
+      "tool_calls_per_item": 3.52,
+      "tool_execution_success": 0.9508,
+      "tool_selection_accuracy": 0.99,
+      "recovery_rate": 1.0,
+      "runs_with_tool_errors": 13,
+      "answered_rate": 0.99,
+      "latency_s_mean": 29.303,
+      "latency_s_median": 22.7,
+      "tokens_per_item": 39946.61,
+      "cost_usd_total": 6.7283,
+      "cost_usd_per_item": 0.0673
+    }
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "bench": "simpleqa",
+  "policy": "full",
+  "provider": "gemini",
+  "model": null,
+  "overrides": null,
+  "grader": {
+    "provider": "gemini",
+    "model": null
+  },
+  "data": "evals/simpleqa_subset100.csv",
+  "search_cache": "on",
+  "n": 100,
+  "grades": {
+    "correct": 89,
+    "incorrect": 6,
+    "not_attempted": 5
+  },
+  "mean": 0.89,
+  "metrics": {
+    "accuracy": 0.89,
+    "attempted_rate": 0.95,
+    "accuracy_given_attempted": 0.9368,
+    "f1": 0.9128
+  }
+}

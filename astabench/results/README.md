@@ -1,0 +1,1 @@
+No runs yet. Planned per category: `asta-lit-v1` → `asta-data-v1` → `asta-code-v1` → `asta-e2e-v1`, each as agent-eval logs plus a `scores.json`. Validation split during development; test split only for leaderboard submission. See [../../README.md](../../README.md) for projected targets.

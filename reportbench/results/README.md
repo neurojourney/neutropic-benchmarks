@@ -1,0 +1,1 @@
+No runs yet. Planned: `rb-v1` (2026-10, 10-task smoke then 100 tasks; rows basic-search / full / full-no-review / full-no-citechain), `rb-v2` (2026-12, citation snowballing + reference budget), `rb-official` (2027 H1, official scripts). See [../../README.md](../../README.md) for projected targets.

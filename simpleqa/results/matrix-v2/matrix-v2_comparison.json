@@ -1,0 +1,114 @@
+[
+  {
+    "row": "model-only",
+    "rc": 0,
+    "bench": "simpleqa",
+    "policy": "model-only",
+    "provider": "gemini",
+    "model": null,
+    "overrides": null,
+    "grader": {
+      "provider": "gemini",
+      "model": null
+    },
+    "data": "evals/simpleqa_subset100.csv",
+    "search_cache": "on",
+    "n": 100,
+    "grades": {
+      "correct": 68,
+      "incorrect": 12,
+      "not_attempted": 20
+    },
+    "mean": 0.68,
+    "metrics": {
+      "accuracy": 0.68,
+      "attempted_rate": 0.8,
+      "accuracy_given_attempted": 0.85,
+      "f1": 0.7556
+    }
+  },
+  {
+    "row": "basic-search",
+    "rc": 0,
+    "bench": "simpleqa",
+    "policy": "basic-search",
+    "provider": "gemini",
+    "model": null,
+    "overrides": null,
+    "grader": {
+      "provider": "gemini",
+      "model": null
+    },
+    "data": "evals/simpleqa_subset100.csv",
+    "search_cache": "on",
+    "n": 100,
+    "grades": {
+      "correct": 94,
+      "incorrect": 1,
+      "not_attempted": 5
+    },
+    "mean": 0.94,
+    "metrics": {
+      "accuracy": 0.94,
+      "attempted_rate": 0.95,
+      "accuracy_given_attempted": 0.9895,
+      "f1": 0.9641
+    }
+  },
+  {
+    "row": "generic-rag",
+    "rc": 0,
+    "bench": "simpleqa",
+    "policy": "generic-rag",
+    "provider": "gemini",
+    "model": null,
+    "overrides": null,
+    "grader": {
+      "provider": "gemini",
+      "model": null
+    },
+    "data": "evals/simpleqa_subset100.csv",
+    "search_cache": "on",
+    "n": 100,
+    "grades": {
+      "correct": 93,
+      "incorrect": 3,
+      "not_attempted": 4
+    },
+    "mean": 0.93,
+    "metrics": {
+      "accuracy": 0.93,
+      "attempted_rate": 0.96,
+      "accuracy_given_attempted": 0.9688,
+      "f1": 0.949
+    }
+  },
+  {
+    "row": "full",
+    "rc": 0,
+    "bench": "simpleqa",
+    "policy": "full",
+    "provider": "gemini",
+    "model": null,
+    "overrides": null,
+    "grader": {
+      "provider": "gemini",
+      "model": null
+    },
+    "data": "evals/simpleqa_subset100.csv",
+    "search_cache": "on",
+    "n": 100,
+    "grades": {
+      "correct": 89,
+      "incorrect": 6,
+      "not_attempted": 5
+    },
+    "mean": 0.89,
+    "metrics": {
+      "accuracy": 0.89,
+      "attempted_rate": 0.95,
+      "accuracy_given_attempted": 0.9368,
+      "f1": 0.9128
+    }
+  }
+]

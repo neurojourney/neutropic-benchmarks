@@ -1,0 +1,26 @@
+{
+  "bench": "simpleqa",
+  "policy": "generic-rag",
+  "provider": "gemini",
+  "model": null,
+  "overrides": null,
+  "grader": {
+    "provider": "gemini",
+    "model": null
+  },
+  "data": "evals/simpleqa_subset100.csv",
+  "search_cache": "on",
+  "n": 100,
+  "grades": {
+    "correct": 93,
+    "incorrect": 3,
+    "not_attempted": 4
+  },
+  "mean": 0.93,
+  "metrics": {
+    "accuracy": 0.93,
+    "attempted_rate": 0.96,
+    "accuracy_given_attempted": 0.9688,
+    "f1": 0.949
+  }
+}
