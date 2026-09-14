@@ -16,17 +16,17 @@
       "logo": "openai"
     },
     {
+      "system": "Neutropic",
+      "config": "10-task smoke · rb-v3",
+      "value": 3.3,
+      "highlight": true,
+      "logo": "neutropic"
+    },
+    {
       "system": "OpenAI",
       "config": "o3",
       "value": 3.1,
       "logo": "openai"
-    },
-    {
-      "system": "Neutropic",
-      "config": "10-task smoke · rb-v2",
-      "value": 2.6,
-      "highlight": true,
-      "logo": "neutropic"
     },
     {
       "system": "Anthropic",
@@ -37,6 +37,6 @@
   ],
   "sources": [
     "ReportBench paper (arXiv:2508.15804), Table 2, recall × 100: Gemini DR 0.036, OpenAI DR 0.033, o3 0.031, claude-4-sonnet 0.021",
-    "Neutropic measured: ../results/rb-v2-smoke10/full.summary.json — reference recall 0.026 (P 0.155) over the 8 scored of the first 10 tasks, L1 (rb-v1: 0.017 / 0.116)"
+    "Neutropic measured: ../results/rb-v3-smoke10/full.summary.json — reference recall 0.033 (P 0.182) over the first 10 tasks, L1, full = product Deep (rb-v2: 0.026 / 0.155 on 8 scored; rb-v1: 0.017 / 0.116)"
   ]
 }
