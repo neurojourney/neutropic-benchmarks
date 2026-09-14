@@ -4,14 +4,6 @@
   "format": "{:.2f}",
   "rows": [
     {
-      "system": "Neutropic",
-      "config": "official judge · target 2027",
-      "value": 65.0,
-      "highlight": true,
-      "projected": true,
-      "logo": "neutropic"
-    },
-    {
       "system": "AI21",
       "config": "AI21-DeepResearch",
       "value": 64.38,
@@ -34,10 +26,17 @@
       "config": "iFlow-Researcher",
       "value": 59.91,
       "logo": "iflow"
+    },
+    {
+      "system": "Neutropic",
+      "config": "10-task smoke · internal judge",
+      "value": 10.7,
+      "highlight": true,
+      "logo": "neutropic"
     }
   ],
   "sources": [
     "Official leaderboard https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html (2026-09)",
-    "Neutropic target: projected, not measured"
+    "Neutropic measured: ../results/dr-v1-smoke10/full.summary.json — overall rubric pass rate 0.107 (×100) on the first 10 of 132 tasks, internal Gemini judge (not the official GPT-5.5 judge)"
   ]
 }

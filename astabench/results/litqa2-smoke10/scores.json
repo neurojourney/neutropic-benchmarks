@@ -1,0 +1,116 @@
+{
+ "task": "astabench/litqa2 (split=all, first 10, no Asta tools \u2014 custom-tools track)",
+ "solver": "solvers/neutropic/solver.py@neutropic (skills=research-paper, auto_report=false, reviewer=false, repair=false)",
+ "n": 10,
+ "metrics": {
+  "score_litqa2/precision": 1.0,
+  "score_litqa2/coverage": 0.3,
+  "is_correct/accuracy": 0.3,
+  "is_correct/stderr": 0.15275252316519464
+ },
+ "cost_usd_total": 2.18,
+ "samples": [
+  {
+   "id": "27234279-f50c-4cfc-86e2-af68364a8f94",
+   "target": "F",
+   "answer": "C",
+   "is_correct": false,
+   "is_sure": false,
+   "cost_usd": 0.222894,
+   "elapsed_s": 110.9,
+   "tool_calls": 11
+  },
+  {
+   "id": "2c05315d-6898-4667-b454-d99b7381bedb",
+   "target": "E",
+   "answer": "E",
+   "is_correct": true,
+   "is_sure": true,
+   "cost_usd": 0.138571,
+   "elapsed_s": 58.9,
+   "tool_calls": 7
+  },
+  {
+   "id": "39129e1c-096f-4414-bf4f-37fadbbe364c",
+   "target": "B",
+   "answer": "B",
+   "is_correct": true,
+   "is_sure": true,
+   "cost_usd": 0.156467,
+   "elapsed_s": 84.4,
+   "tool_calls": 11
+  },
+  {
+   "id": "517e7cf8-c5d2-4391-9e2a-235b79d93050",
+   "target": "A",
+   "answer": "E",
+   "is_correct": false,
+   "is_sure": false,
+   "cost_usd": 0.191306,
+   "elapsed_s": 109.0,
+   "tool_calls": 12
+  },
+  {
+   "id": "5c4c602c-9624-4eae-ac44-efe4c0dd10e6",
+   "target": "D",
+   "answer": "D",
+   "is_correct": true,
+   "is_sure": true,
+   "cost_usd": 0.219145,
+   "elapsed_s": 108.7,
+   "tool_calls": 12
+  },
+  {
+   "id": "76184ccf-4bf0-469e-a442-11d04b4ff8b0",
+   "target": "A",
+   "answer": "D",
+   "is_correct": false,
+   "is_sure": false,
+   "cost_usd": 0.193152,
+   "elapsed_s": 195.4,
+   "tool_calls": 12
+  },
+  {
+   "id": "c9bdb9b5-28c1-44da-93b6-b1fc9d8bf369",
+   "target": "A",
+   "answer": "D",
+   "is_correct": false,
+   "is_sure": false,
+   "cost_usd": 0.104653,
+   "elapsed_s": 59.9,
+   "tool_calls": 6
+  },
+  {
+   "id": "cb710074-73a8-4407-b0c7-7dc868f1bc76",
+   "target": "G",
+   "answer": "F",
+   "is_correct": false,
+   "is_sure": false,
+   "cost_usd": 0.573997,
+   "elapsed_s": 318.0,
+   "tool_calls": 12
+  },
+  {
+   "id": "e3b5a4af-41d9-48db-becf-29a08d0ad28e",
+   "target": "C",
+   "answer": "D",
+   "is_correct": false,
+   "is_sure": false,
+   "cost_usd": 0.167703,
+   "elapsed_s": 73.9,
+   "tool_calls": 3
+  },
+  {
+   "id": "e6b0f9e5-e976-47dc-b839-0b2fca967e9e",
+   "target": "E",
+   "answer": "I investigated the academic literature and recent studies on single-nucleus RNA sequencing (snRNA-seq) of skeletal muscle to understand the specific gene expression profiles of myotendinous junction (MTJ) myonuclei. \n\n**Key Findings:**\n* Myonuclei exhibit distinct transcriptional profiles depending on their spatial domain within the muscle fiber. \n* MTJ myonuclei are specifically enriched for genes involved in **cell-matrix interactions** (such as *COL22A1*). This specialization is crucial for organizing the extracellular matrix and anchoring the muscle to the tendon. \n* In contrast, other specialized domains, such as neuromuscular junction (NMJ) myonuclei, are enriched for genes related to synaptic transmission rather than cell-matrix interactions.\n\nFor more detailed insights and specific study citations, please refer to the accompanying report.",
+   "is_correct": false,
+   "is_sure": false,
+   "cost_usd": 0.208258,
+   "elapsed_s": 109.0,
+   "tool_calls": 12
+  }
+ ],
+ "date": "2026-09-13",
+ "log": "litqa2-notools.eval"
+}

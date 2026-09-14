@@ -26,7 +26,7 @@ git clone https://github.com/ByteDance-BandAI/ReportBench ~/.neutropic-bench/dat
 
 ```bash
 python -m app.benchmarks.matrix --config evals/matrix_reportbench.yaml          # smoke (limit 10)
-python -m app.benchmarks.run --bench reportbench --data /bench/ReportBench/ReportBench_v1.1.jsonl \
+python -m app.benchmarks.run --bench reportbench --data bench_data/ReportBench/ReportBench_v1.1.jsonl \
   --policy full --provider gemini --grader-provider gemini --pause 10 --tag rb-v1
 ```
 

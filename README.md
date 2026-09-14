@@ -12,11 +12,18 @@ together track the agent's maturity from factual search to end-to-end science:
 | 03 · Research | [DeepResearch Bench II](https://github.com/imlrz/DeepResearch-Bench-II) | Autonomous deep research — 132 tasks, 9,430 binary expert rubrics (recall / analysis / presentation) | [`deepresearch-bench-ii/`](./deepresearch-bench-ii/) |
 | 04 · Science | [AstaBench](https://allenai.org/asta/bench) | End-to-end scientific agent — literature, code & execution, data analysis, discovery (2,400+ problems) | [`astabench/`](./astabench/) |
 
-> **Status (2026-09-13):** SimpleQA has measured results on a fixed 100-question
-> subset. ReportBench, DeepResearch Bench II and AstaBench are **not yet run** —
-> the numbers in those sections are **targets / projections**, marked as such,
-> and will be replaced by measured values as runs land in each `results/`
-> folder. Nothing in a "Projected" table should be quoted as a result.
+> **Status (2026-09-14):** SimpleQA has measured results on a fixed 100-question
+> subset. ReportBench (two runs), DeepResearch Bench II and AstaBench LitQA2 have
+> **10-task smokes** (L1 — wiring and cost checks, not results to quote). Every
+> "Projected" table is a target, not a measurement, and is replaced by measured
+> values as runs land in `results/`.
+>
+> | Benchmark | Current (L1 smoke) | Best published |
+> |-----------|--------------------|----------------|
+> | SimpleQA | 0.90 accuracy (subset 100) | 95.3 % |
+> | ReportBench | recall 0.026 · precision 0.155 (rb-v2, 8 of 10 tasks) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
+> | DeepResearch Bench II | 10.7 internal judge · **13.6 official GPT-5.5 judge** (10 tasks) | 64.38 |
+> | AstaBench | LitQA2 accuracy 0.30 (10 questions, 1 of 11 tasks) | overall 58.0 % |
 
 ## Notes
 
@@ -114,7 +121,18 @@ That is the axis Neutropic targets.
 
 ![ReportBench benchmark chart](./reportbench/chart.png)
 
-### Projected — not yet measured
+### Measured — L1 smoke, first 10 of 100 tasks
+
+| Run | Row | n | Precision | Recall | F1 | Citation match | Cited acc. | refs/task | s/item | $/item |
+|-----|-----|---|-----------|--------|----|----------------|------------|-----------|--------|--------|
+| [`rb-v1-smoke10`](./reportbench/results/rb-v1-smoke10/) | `full` | 10 | 0.116 | 0.017 | 0.028 | 0.65 | 0.82 | 22.5 | 840 | 0.34 |
+| [`rb-v2-smoke10`](./reportbench/results/rb-v2-smoke10/) | `full` + Semantic Scholar key, single container | 8 of 10 | **0.155** | **0.026** | 0.042 | 0.60 | 0.80 | 22.1 | 1,255 | 0.36 |
+
+- Deterministic reference matching against the expert list (title / arXiv id / DOI); citation judgements by the Gemini grader.
+- `rb-v1`: the first five tasks score P 0.13–0.25 / R 0.018–0.038 — around the published Deep Research systems — the last five near zero. Every task hit Semantic Scholar 429 and arXiv timeouts (no API key, two containers in parallel), so the CS-heavy surveys were answered from ERIC / Europe PMC results.
+- `rb-v2` (same tasks, Semantic Scholar key, one container, larger HTTP budget): the three tasks that scored zero in v1 now recall 1–3 expert references each; on the 8 scored tasks P/R rose from 0.110/0.017 to 0.155/0.026. Two tasks lost their report because the eval token expired mid-task (runs now take ~21 min per task; re-auth interval lowered to 20 min). OpenAlex 429 / arXiv timeouts persist — the next lever is reference budget and citation snowballing, not more retries.
+
+### Projected — next runs
 
 | Run | Tier | Row | Precision | Recall | Citation match | Basis |
 |-----|------|-----|-----------|--------|----------------|-------|
@@ -154,7 +172,16 @@ recall and analysis.
 
 ![DeepResearch Bench II benchmark chart](./deepresearch-bench-ii/chart.png)
 
-### Projected — not yet measured
+### Measured — L1 smoke, first 10 of 132 tasks
+
+| Run | Row | n | Total | Recall | Analysis | Presentation | Citation match | blocked hits | s/item | $/item |
+|-----|-----|---|-------|--------|----------|--------------|----------------|--------------|--------|--------|
+| [`dr-v1-smoke10`](./deepresearch-bench-ii/results/dr-v1-smoke10/) | `full` | 10 | **10.7** | 8.1 | 7.1 | 30.1 | 0.76 | 2 tasks | 712 | 0.41 |
+
+- Rubric pass rates ×100, judged by Gemini 3.8 Flash with the official exact-number rule. The same 10 reports re-scored by the **official GPT-5.5 judge** (`run_evaluation.py`) give **13.6** (recall 10.3 · analysis 8.5 · presentation 34.6) — per-task Pearson r = 0.97 with the internal judge, which runs ~3 pp conservative ([details](./deepresearch-bench-ii/results/dr-v1-smoke10/)). Task language is enforced (zh tasks are answered in Chinese).
+- Presentation rubrics are partly met; recall and analysis are not: the reports do not carry the specific figures, named entities and comparison-table rows the rubrics ask for, regardless of report length (4k–20k chars). Two tasks cited a blocked expert article through the Crossref path — that path is now filtered too.
+
+### Projected — next runs
 
 | Run | Tier | Row | Total | Recall | Analysis | Presentation | Basis |
 |-----|------|-----|-------|--------|----------|--------------|-------|
@@ -191,7 +218,16 @@ Leaderboard reference points (Ai2, 2026-04 update):
 | Asta v0 | 53.0% | — |
 | GPT-5.5 + ReAct | 52.9% | 1.61 |
 
-### Projected — not yet measured
+### Measured — L1 smoke, LitQA2 only (1 of 11 tasks)
+
+| Run | Task | Track | n | Accuracy | Precision | Coverage | $/item | s/item |
+|-----|------|-------|---|----------|-----------|----------|--------|--------|
+| [`litqa2-smoke10`](./astabench/results/litqa2-smoke10/) | `litqa2` (LAB-bench, public split) | custom tools (Neutropic retrieval) | 10 | **0.30** | 1.00 | 0.30 | 0.22 | 123 |
+
+- Run through the official `asta-bench` harness (Inspect) with the official `score_litqa2` scorer; Neutropic is wrapped as an Inspect solver that calls the headless solve service (`astabench/runner/solver/`).
+- Every sure answer was correct (precision 1.0); the agent answered "Insufficient information" on 6 of 10 questions whose key paper its searches did not surface, and one reply lacked the final-letter line. Not comparable to the overall leaderboard score; the validation split (gated HF dataset) and the standard-tools track (`ASTA_TOOL_KEY`) are still to do.
+
+### Projected — next runs
 
 Neutropic is wrapped as an `agent-eval` solver and evaluated one category at
 a time, starting where the product already has assets:
@@ -257,11 +293,11 @@ grade distribution, accuracy metrics, agent-performance columns (tool success,
 tool selection, recovery, latency, tokens, cost) and the exact policy
 overrides used. Per-item files (question, answer, grade, trajectory) are
 added once reviewed for personal data. Each `chart.png` compares Neutropic
-with published systems: a **blue** bar is a measured Neutropic result, a
-**light-blue** bar with a "≥" value is a projected target (its config line
-says `target`), gray bars are published competitor scores. Charts are
-rendered by `runner/chart.py` from `runner/chart.json`, which lists the
-source of every number. Brand marks in `runner/logos/` are trademarks of
+with published systems: the **blue** bar is the measured Neutropic result,
+gray bars are published competitor scores; targets appear only in the
+"Projected" tables, never in the charts. Charts are rendered by
+`runner/chart.py` from `runner/chart.json`, which lists the source of every
+number. Brand marks in `runner/logos/` are trademarks of
 their respective owners and are used for identification only.
 
 ## Citation

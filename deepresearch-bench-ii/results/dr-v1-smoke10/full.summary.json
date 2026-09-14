@@ -1,0 +1,44 @@
+{
+  "bench": "deepresearch",
+  "policy": "full",
+  "provider": "gemini",
+  "model": null,
+  "overrides": null,
+  "grader": {
+    "provider": "gemini",
+    "model": null
+  },
+  "data": "bench_data/DRB2/tasks_and_rubrics.jsonl",
+  "search_cache": "on",
+  "n": 10,
+  "grades": {
+    "scored": 10
+  },
+  "mean": 0.107,
+  "metrics": {
+    "scored": 10,
+    "failed": 0,
+    "overall_pass_rate": 0.107,
+    "recall_pass_rate": 0.0815,
+    "analysis_pass_rate": 0.0705,
+    "presentation_pass_rate": 0.3005,
+    "citation_match_rate": 0.7633,
+    "cited_statement_accuracy": 0.8817,
+    "blocked_hit_rate": 0.2,
+    "note": "rubric grading uses this run's grader model/prompt, not the official DeepResearch Bench II judge — compare rows relative to each other"
+  },
+  "agent_performance": {
+    "n": 10,
+    "tool_calls_per_item": 24.1,
+    "tool_execution_success": 0.9128,
+    "tool_selection_accuracy": 1.0,
+    "recovery_rate": 1.0,
+    "runs_with_tool_errors": 8,
+    "answered_rate": 1.0,
+    "latency_s_mean": 711.75,
+    "latency_s_median": 579.4,
+    "tokens_per_item": 400986.4,
+    "cost_usd_total": 4.1374,
+    "cost_usd_per_item": 0.4137
+  }
+}

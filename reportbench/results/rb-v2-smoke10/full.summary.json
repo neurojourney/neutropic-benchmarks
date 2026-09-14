@@ -1,0 +1,47 @@
+{
+  "bench": "reportbench",
+  "policy": "full",
+  "provider": "gemini",
+  "model": null,
+  "overrides": null,
+  "grader": {
+    "provider": "gemini",
+    "model": null
+  },
+  "data": "bench_data/ReportBench/ReportBench_v1.1.jsonl",
+  "search_cache": "on",
+  "n": 10,
+  "grades": {
+    "failed": 2,
+    "scored": 8
+  },
+  "mean": 0.0334,
+  "metrics": {
+    "scored": 8,
+    "failed": 2,
+    "reference_precision": 0.1551,
+    "reference_recall": 0.0264,
+    "reference_f1": 0.0417,
+    "citation_match_rate": 0.6021,
+    "cited_statement_accuracy": 0.801,
+    "noncited_accuracy": null,
+    "avg_references": 22.125,
+    "avg_cited_statements": 66.5,
+    "avg_noncited_statements": 2.375,
+    "note": "noncited_accuracy uses the grader's parametric knowledge (ReportBench uses web-connected majority vote) — treat as a conservative approximation"
+  },
+  "agent_performance": {
+    "n": 10,
+    "tool_calls_per_item": 21.7,
+    "tool_execution_success": 0.9072,
+    "tool_selection_accuracy": 0.9,
+    "recovery_rate": 1.0,
+    "runs_with_tool_errors": 6,
+    "answered_rate": 0.9,
+    "latency_s_mean": 1255.35,
+    "latency_s_median": 1296.2,
+    "tokens_per_item": 275223.5,
+    "cost_usd_total": 3.5598,
+    "cost_usd_per_item": 0.356
+  }
+}

@@ -25,7 +25,7 @@ git clone https://github.com/imlrz/DeepResearch-Bench-II ~/.neutropic-bench/data
 
 ```bash
 python -m app.benchmarks.matrix --config evals/matrix_deepresearch.yaml        # smoke (limit 10)
-python -m app.benchmarks.run --bench deepresearch --data /bench/DRB2/tasks_and_rubrics.jsonl \
+python -m app.benchmarks.run --bench deepresearch --data bench_data/DRB2/tasks_and_rubrics.jsonl \
   --policy full --provider gemini --grader-provider gemini --tag dr-v1
 ```
 

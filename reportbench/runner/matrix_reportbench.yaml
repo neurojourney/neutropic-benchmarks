@@ -1,8 +1,8 @@
 # ReportBench ablation ladder — python -m app.benchmarks.matrix --config evals/matrix_reportbench.yaml
-# Copy into neutropic2-api/evals/. Data is mounted read-only at /bench in the bench container.
+# Copy into neutropic2-api/evals/. bench_data/ = ~/.neutropic-bench/data (symlink on the dev box, read-only mount in the bench container).
 
 bench: reportbench
-data: /bench/ReportBench/ReportBench_v1.1.jsonl   # ReportBench_v1.1_GT/ must sit next to it
+data: bench_data/ReportBench/ReportBench_v1.1.jsonl   # ReportBench_v1.1_GT/ must sit next to it
 limit: 10          # smoke — delete for the full 100 tasks
 pause: 10          # academic DBs rate-limit harder than web search
 tag: rb-v1

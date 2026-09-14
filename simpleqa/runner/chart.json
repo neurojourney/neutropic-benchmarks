@@ -4,14 +4,6 @@
   "format": "{:.1f}%",
   "rows": [
     {
-      "system": "Neutropic",
-      "config": "official run · target 2027",
-      "value": 95.5,
-      "highlight": true,
-      "projected": true,
-      "logo": "neutropic"
-    },
-    {
       "system": "Liner",
       "config": "Pro + Reasoning",
       "value": 95.3,
@@ -39,7 +31,6 @@
   ],
   "sources": [
     "Liner: https://www.threads.com/@alexandersyoon/post/DGmVGTdPVLj (Liner Pro 93.7, + Reasoning 95.3)",
-    "Neutropic measured: ../results/matrix-v3/full.summary.json (full), ../results/matrix-v2/model-only.summary.json (Gemini no tools)",
-    "Neutropic target: above current best published score (95.3) on the official full set — projected, not measured"
+    "Neutropic measured: ../results/matrix-v3/full.summary.json (full), ../results/matrix-v2/model-only.summary.json (Gemini no tools)"
   ]
 }
