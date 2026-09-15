@@ -12,12 +12,14 @@ together track the agent's maturity from factual search to end-to-end science:
 | 03 · Research | [DeepResearch Bench II](https://github.com/imlrz/DeepResearch-Bench-II) | Autonomous deep research — 132 tasks, 9,430 binary expert rubrics (recall / analysis / presentation) | [`deepresearch-bench-ii/`](./deepresearch-bench-ii/) |
 | 04 · Science | [AstaBench](https://allenai.org/asta/bench) | End-to-end scientific agent — literature, code & execution, data analysis, discovery (2,400+ problems) | [`astabench/`](./astabench/) |
 
-> **Status (2026-09-15):** SimpleQA has measured results on a fixed 100-question
+> **Status (2026-09-16):** SimpleQA has measured results on a fixed 100-question
 > subset. ReportBench (five runs, rb-v1 → rb-v5 on the same 10 tasks),
-> DeepResearch Bench II and AstaBench LitQA2 have **10-task smokes** (L1 —
-> wiring and cost checks, not results to quote). Every "Projected" table is a
-> target, not a measurement, and is replaced by measured values as runs land in
-> `results/`. Next up: the 100-task ReportBench run (`rb-100`).
+> DeepResearch Bench II (dr-v1 → dr-v7 on the same 10 tasks, each also scored
+> by the official GPT-5.5 judge) and AstaBench LitQA2 have **10-task smokes**
+> (L1 — wiring and cost checks, not results to quote). Every "Projected" table
+> is a target, not a measurement, and is replaced by measured values as runs
+> land in `results/`. Next up: `dr-v8` (table-row fact hunt, entity
+> enumeration) and the 100-task ReportBench run (`rb-100`).
 >
 > | Benchmark | Current (L1 smoke) | Best published |
 > |-----------|--------------------|----------------|
@@ -187,6 +189,16 @@ recall and analysis.
 
 - Rubric pass rates ×100, judged by Gemini 3.8 Flash with the official exact-number rule. The same reports re-scored by the **official GPT-5.5 judge** (`run_evaluation.py`): dr-v1 **13.6** (recall 10.3 · analysis 8.5 · presentation 34.6, r = 0.97 with the internal judge), dr-v7 **22.2** (recall 23.5 · analysis 16.1 · presentation 65.4, r = 0.73 — the internal judge over-credits one task) ([dr-v1](./deepresearch-bench-ii/results/dr-v1-smoke10/) · [dr-v7](./deepresearch-bench-ii/results/dr-v7-smoke10/)). The chart above plots the official-judge score, since that is the judge behind the leaderboard numbers. Task language is enforced (zh tasks are answered in Chinese).
 - dr-v1 → dr-v7 (2026-09-16, same 10 tasks): every task but one improved under the official judge; presentation went from 0.35 to 0.65 (request structure followed: parts, numbered items and tables as sub-headings), recall from 0.10 to 0.24 (fact ledger + fact hunt: 61 of 100 explicitly requested items found through Wikipedia / World Bank / web), analysis from 0.09 to 0.16. The remaining gap is gold-specific figures that live only in ministry press releases and entity lists the rubrics enumerate; no commercial search API is used (open/official data APIs only). Cost 2.5× longer per task (30 min) at a lower price ($0.31) than dr-v1.
+
+### Progress on the same 10 tasks
+
+| Run | Date | What changed | Official GPT-5.5 total | Recall | Analysis | Presentation | Internal Gemini total |
+|-----|------|--------------|------------------------|--------|----------|--------------|------------------------|
+| dr-v1 | 2026-09-13 | production core as shipped | 13.6 | 10.3 | 8.5 | 34.6 | 10.7 |
+| dr-v2 … dr-v6 | 2026-09-15 | WS2 iterations (fact ledger, request structure, brief as source, fact hunt) — 3–5 tasks each, internal judge only, not stored | — | — | — | — | 10.4 → 12.4 |
+| dr-v7 | 2026-09-16 | + open-data fact hunt (Wikipedia, World Bank), WS4 budgets, WS1 date window / snowballing | **22.2** | 23.5 | 16.1 | 65.4 | 19.2 |
+
+What the dr-v7 official verdicts say is still missing (≈ 460 failed rubrics): comparison-table rows left as "not provided by collected sources" (task2+ 40 cells, task4+ 26) although the study is named — the rubrics want author / year / market / method / figure per row; entity lists with 4–6 of the 10–15 items the rubrics enumerate; analysis claims (causal / comparative statements) absent as a whole; three tasks lost a "exactly two parts" rubric to an inserted summary section; two −1 items for a same-title paper reached through a different DOI.
 
 ### Projected — next runs
 
