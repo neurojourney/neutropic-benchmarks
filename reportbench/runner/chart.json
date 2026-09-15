@@ -4,6 +4,13 @@
   "format": "{:.1f}%",
   "rows": [
     {
+      "system": "Neutropic",
+      "config": "10-task smoke · rb-v5",
+      "value": 7.0,
+      "highlight": true,
+      "logo": "neutropic"
+    },
+    {
       "system": "Google",
       "config": "Gemini Deep Research",
       "value": 3.6,
@@ -14,13 +21,6 @@
       "config": "Deep Research",
       "value": 3.3,
       "logo": "openai"
-    },
-    {
-      "system": "Neutropic",
-      "config": "10-task smoke · rb-v3",
-      "value": 3.3,
-      "highlight": true,
-      "logo": "neutropic"
     },
     {
       "system": "OpenAI",
@@ -37,6 +37,6 @@
   ],
   "sources": [
     "ReportBench paper (arXiv:2508.15804), Table 2, recall × 100: Gemini DR 0.036, OpenAI DR 0.033, o3 0.031, claude-4-sonnet 0.021",
-    "Neutropic measured: ../results/rb-v3-smoke10/full.summary.json — reference recall 0.033 (P 0.182) over the first 10 tasks, L1, full = product Deep (rb-v2: 0.026 / 0.155 on 8 scored; rb-v1: 0.017 / 0.116)"
+    "Neutropic measured: ../results/rb-v5-smoke10/full.summary.json — reference recall 0.070 (P 0.287) over the first 10 tasks, L1, full = product Deep + date window + snowballing (rb-v3: 0.033 / 0.182; rb-v4: 0.031 / 0.169)"
   ]
 }

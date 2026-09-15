@@ -1,0 +1,139 @@
+{
+  "bench": "reportbench",
+  "policy": "full",
+  "provider": "gemini",
+  "model": null,
+  "overrides": null,
+  "grader": {
+    "provider": "gemini",
+    "model": null
+  },
+  "effort": {
+    "effort": "deep",
+    "max_steps": 48,
+    "deep_pass": true,
+    "reviewer": true,
+    "repair": true,
+    "tool_scope": "skill",
+    "time_budget_s": 600,
+    "report_figures": false
+  },
+  "db_stats": {
+    "api.crossref.org": {
+      "requests": 148,
+      "waited_s": 0.0,
+      "http429": 0,
+      "http5xx": 0,
+      "timeouts": 0,
+      "circuit_opens": 0,
+      "circuit_skips": 0
+    },
+    "api.elsevier.com": {
+      "requests": 148,
+      "waited_s": 0.0,
+      "http429": 0,
+      "http5xx": 0,
+      "timeouts": 0,
+      "circuit_opens": 0,
+      "circuit_skips": 0
+    },
+    "api.ies.ed.gov": {
+      "requests": 175,
+      "waited_s": 0.0,
+      "http429": 0,
+      "http5xx": 110,
+      "timeouts": 0,
+      "circuit_opens": 22,
+      "circuit_skips": 92
+    },
+    "api.openalex.org": {
+      "requests": 286,
+      "waited_s": 0.0,
+      "http429": 0,
+      "http5xx": 0,
+      "timeouts": 0,
+      "circuit_opens": 0,
+      "circuit_skips": 0
+    },
+    "api.semanticscholar.org": {
+      "requests": 220,
+      "waited_s": 4.3,
+      "http429": 62,
+      "http5xx": 0,
+      "timeouts": 0,
+      "circuit_opens": 4,
+      "circuit_skips": 6
+    },
+    "eutils.ncbi.nlm.nih.gov": {
+      "requests": 201,
+      "waited_s": 0.7,
+      "http429": 0,
+      "http5xx": 5,
+      "timeouts": 0,
+      "circuit_opens": 1,
+      "circuit_skips": 2
+    },
+    "export.arxiv.org": {
+      "requests": 30,
+      "waited_s": 4.6,
+      "http429": 21,
+      "http5xx": 0,
+      "timeouts": 9,
+      "circuit_opens": 10,
+      "circuit_skips": 162
+    },
+    "html.duckduckgo.com": {
+      "requests": 1,
+      "waited_s": 0.0,
+      "http429": 0,
+      "http5xx": 0,
+      "timeouts": 0,
+      "circuit_opens": 0,
+      "circuit_skips": 0
+    },
+    "www.ebi.ac.uk": {
+      "requests": 161,
+      "waited_s": 0.0,
+      "http429": 0,
+      "http5xx": 21,
+      "timeouts": 3,
+      "circuit_opens": 5,
+      "circuit_skips": 12
+    }
+  },
+  "data": "bench_data/ReportBench/ReportBench_v1.1.jsonl",
+  "search_cache": "on",
+  "n": 10,
+  "grades": {
+    "scored": 10
+  },
+  "mean": 0.1086,
+  "metrics": {
+    "scored": 10,
+    "failed": 0,
+    "reference_precision": 0.2869,
+    "reference_recall": 0.0703,
+    "reference_f1": 0.1086,
+    "citation_match_rate": 0.6911,
+    "cited_statement_accuracy": 0.8456,
+    "noncited_accuracy": 1.0,
+    "avg_references": 22.3,
+    "avg_cited_statements": 54.0,
+    "avg_noncited_statements": 10.6,
+    "note": "noncited_accuracy uses the grader's parametric knowledge (ReportBench uses web-connected majority vote) — treat as a conservative approximation"
+  },
+  "agent_performance": {
+    "n": 10,
+    "tool_calls_per_item": 20.3,
+    "tool_execution_success": 0.9167,
+    "tool_selection_accuracy": 1.0,
+    "recovery_rate": 1.0,
+    "runs_with_tool_errors": 5,
+    "answered_rate": 1.0,
+    "latency_s_mean": 1172.33,
+    "latency_s_median": 1099.75,
+    "tokens_per_item": 388258.8,
+    "cost_usd_total": 2.7661,
+    "cost_usd_per_item": 0.2766
+  }
+}

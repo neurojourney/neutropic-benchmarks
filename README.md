@@ -13,7 +13,7 @@ together track the agent's maturity from factual search to end-to-end science:
 | 04 · Science | [AstaBench](https://allenai.org/asta/bench) | End-to-end scientific agent — literature, code & execution, data analysis, discovery (2,400+ problems) | [`astabench/`](./astabench/) |
 
 > **Status (2026-09-14):** SimpleQA has measured results on a fixed 100-question
-> subset. ReportBench (three runs), DeepResearch Bench II and AstaBench LitQA2 have
+> subset. ReportBench (five runs), DeepResearch Bench II and AstaBench LitQA2 have
 > **10-task smokes** (L1 — wiring and cost checks, not results to quote). Every
 > "Projected" table is a target, not a measurement, and is replaced by measured
 > values as runs land in `results/`.
@@ -21,7 +21,7 @@ together track the agent's maturity from factual search to end-to-end science:
 > | Benchmark | Current (L1 smoke) | Best published |
 > |-----------|--------------------|----------------|
 > | SimpleQA | 0.90 accuracy (subset 100) | 95.3 % |
-> | ReportBench | recall 0.033 · precision 0.182 (rb-v3, 10 tasks) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
+> | ReportBench | recall 0.070 · precision 0.287 (rb-v5, 10 tasks, date window + snowballing; rb-v3 0.033 / 0.182) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
 > | DeepResearch Bench II | 10.7 internal judge · **13.6 official GPT-5.5 judge** (10 tasks) | 64.38 |
 > | AstaBench | LitQA2 accuracy 0.30 (10 questions, 1 of 11 tasks) | overall 58.0 % |
 
@@ -127,12 +127,16 @@ That is the axis Neutropic targets.
 |-----|-----|---|-----------|--------|----|----------------|------------|-----------|--------|--------|
 | [`rb-v1-smoke10`](./reportbench/results/rb-v1-smoke10/) | `full` | 10 | 0.116 | 0.017 | 0.028 | 0.65 | 0.82 | 22.5 | 840 | 0.34 |
 | [`rb-v2-smoke10`](./reportbench/results/rb-v2-smoke10/) | `full` + Semantic Scholar key, single container | 8 of 10 | 0.155 | 0.026 | 0.042 | 0.60 | 0.80 | 22.1 | 1,255 | 0.36 |
-| [`rb-v3-smoke10`](./reportbench/results/rb-v3-smoke10/) | `full` = product Deep (deep pass + reviewer wired, WS0) | 10 | **0.182** | **0.033** | 0.055 | 0.78 | 0.89 | 15.9 | 2,949 | 0.27 |
+| [`rb-v3-smoke10`](./reportbench/results/rb-v3-smoke10/) | `full` = product Deep (deep pass + reviewer wired, WS0) | 10 | 0.182 | 0.033 | 0.055 | 0.78 | 0.89 | 15.9 | 2,949 | 0.27 |
+| [`rb-v4-smoke10`](./reportbench/results/rb-v4-smoke10/) | rb-v3 + WS4: per-host request gate, 600 s research budget, no figures (OpenAlex/arXiv unavailable) | 10 | 0.169 | 0.031 | 0.051 | 0.61 | 0.81 | 17.2 | **1,424** | **0.21** |
+| [`rb-v5-smoke10`](./reportbench/results/rb-v5-smoke10/) | rb-v4 + WS1: prompt date window enforced, reference cap 120, 1-hop citation snowballing, OpenAlex key | 10 | **0.287** | **0.070** | **0.109** | 0.69 | 0.85 | 22.3 | 1,172 | 0.28 |
 
 - Deterministic reference matching against the expert list (title / arXiv id / DOI); citation judgements by the Gemini grader.
 - `rb-v1`: the first five tasks score P 0.13–0.25 / R 0.018–0.038 — around the published Deep Research systems — the last five near zero. Every task hit Semantic Scholar 429 and arXiv timeouts (no API key, two containers in parallel), so the CS-heavy surveys were answered from ERIC / Europe PMC results.
 - `rb-v2` (same tasks, Semantic Scholar key, one container, larger HTTP budget): the three tasks that scored zero in v1 now recall 1–3 expert references each; on the 8 scored tasks P/R rose from 0.110/0.017 to 0.155/0.026. Two tasks lost their report because the eval token expired mid-task (runs now take ~21 min per task; re-auth interval lowered to 20 min). OpenAlex 429 / arXiv timeouts persist — the next lever is reference budget and citation snowballing, not more retries.
 - `rb-v3` (same tasks, the `full` preset now equals the product's Deep effort and the reviewer actually runs — earlier rows never invoked it; eval token refreshed in-task): all 10 tasks scored, P/R 0.182/0.033, citation match 0.60 → 0.78 and cited-statement accuracy 0.80 → 0.89. Best single task P 0.667 / R 0.170. Four tasks scored zero: 24 % of all cited references are newer than the prompt's explicit "published before <date>" cutoff (no year filter in retrieval), off-topic/tooling references (NumPy, PRISMA) reach the bibliography, and some reports cite only 5–8 sources. Tasks take 49 min on average (one 100 min), so the next work is the date window + reference budget/snowballing (WS1) and a per-task time budget (WS4).
+- `rb-v4` (same tasks, WS4 execution budget: every DB request paced per host with a circuit breaker, 600 s research budget per task, figures off): 24 min per task (−52 %), $0.21 (−22 %), reference scores unchanged within noise (P/R 0.169/0.031). The gate also exposed that OpenAlex now bills per request and its key-less daily allowance was exhausted for the whole run — every OpenAlex call was a 429 that the circuit turned into a 0 s skip — so rb-v4 (and, unknowingly, rb-v1…v3's OpenAlex misses) ran on Semantic Scholar/Crossref/PubMed/Europe PMC alone. Citation faithfulness fell (0.78 → 0.61) because the budget cuts the deep pass on long tasks. An OpenAlex API key is in place for the next runs.
+- `rb-v5` (same tasks, WS1 recall work): the prompt's "published before <month year>" window is now enforced end-to-end (query filters on every DB + hard drop at collection — 0 of 290 references after the cutoff, vs 24 % in rb-v3), the reference cap is 120, and a 1-hop citation snowball adds the top 30 references/citing papers of the 5 strongest sources. Recall 0.031 → **0.070**, precision 0.169 → **0.287**, every task above zero, 20 min and $0.28 per task with OpenAlex fully available (0 × 429). Still 10 tasks under the internal judge; the 100-task run is next.
 
 ### Projected — next runs
 
