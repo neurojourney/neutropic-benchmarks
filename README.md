@@ -12,16 +12,17 @@ together track the agent's maturity from factual search to end-to-end science:
 | 03 · Research | [DeepResearch Bench II](https://github.com/imlrz/DeepResearch-Bench-II) | Autonomous deep research — 132 tasks, 9,430 binary expert rubrics (recall / analysis / presentation) | [`deepresearch-bench-ii/`](./deepresearch-bench-ii/) |
 | 04 · Science | [AstaBench](https://allenai.org/asta/bench) | End-to-end scientific agent — literature, code & execution, data analysis, discovery (2,400+ problems) | [`astabench/`](./astabench/) |
 
-> **Status (2026-09-14):** SimpleQA has measured results on a fixed 100-question
-> subset. ReportBench (five runs), DeepResearch Bench II and AstaBench LitQA2 have
-> **10-task smokes** (L1 — wiring and cost checks, not results to quote). Every
-> "Projected" table is a target, not a measurement, and is replaced by measured
-> values as runs land in `results/`.
+> **Status (2026-09-15):** SimpleQA has measured results on a fixed 100-question
+> subset. ReportBench (five runs, rb-v1 → rb-v5 on the same 10 tasks),
+> DeepResearch Bench II and AstaBench LitQA2 have **10-task smokes** (L1 —
+> wiring and cost checks, not results to quote). Every "Projected" table is a
+> target, not a measurement, and is replaced by measured values as runs land in
+> `results/`. Next up: the 100-task ReportBench run (`rb-100`).
 >
 > | Benchmark | Current (L1 smoke) | Best published |
 > |-----------|--------------------|----------------|
 > | SimpleQA | 0.90 accuracy (subset 100) | 95.3 % |
-> | ReportBench | recall 0.070 · precision 0.287 (rb-v5, 10 tasks, date window + snowballing; rb-v3 0.033 / 0.182) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
+> | ReportBench | recall **0.070** · precision 0.287 · F1 0.109 (rb-v5, 10 tasks, date window + snowballing; rb-v3 0.033 / 0.182) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
 > | DeepResearch Bench II | 10.7 internal judge · **13.6 official GPT-5.5 judge** (10 tasks) | 64.38 |
 > | AstaBench | LitQA2 accuracy 0.30 (10 questions, 1 of 11 tasks) | overall 58.0 % |
 
@@ -142,14 +143,13 @@ That is the axis Neutropic targets.
 
 | Run | Tier | Row | Precision | Recall | Citation match | Basis |
 |-----|------|-----|-----------|--------|----------------|-------|
-| `rb-v1` (planned 2026-10) | L1 | `basic-search` | ~0.15 | ~0.02 | ~70% | baseline expectation from published web-search systems |
-| `rb-v1` | L1 | `full` | ≥ 0.30 | ≥ 0.04 | ≥ 78% | evidence store + citation chain + reviewer/repair; reference budget 40 |
-| `rb-v2` (planned 2026-12) | L1 | `full` + citation snowballing (1-hop refs/cites), reference budget 80 | ≥ 0.30 | **≥ 0.05** | ≥ 80% | most expert references sit within 1 hop of the top candidates |
-| `rb-official` (2027 H1) | L2 | `full` | ≥ 0.30 | ≥ 0.05 | ≥ 80% | official 4-stage scripts (statement → related-work → metrics) |
+| `rb-v6` (2026-09) | L1, same 10 tasks | `full` + survey-style related-literature coverage (cite the wider in-window pool), DOI / arXiv id fill for every reference | ≥ 0.30 | ≥ 0.09 | ≥ 78% | rb-v5 holds 120+ in-window papers per task but each report cites only 15–33; title-variant matches are missed without ids |
+| `rb-100` (2026-10) | L1 | `full` + `basic-search` on all 100 tasks | ≥ 0.30 | **≥ 0.07** | ≥ 78% | first number at the published scale (≈ 33 h, ≈ $28 + OpenAlex ≈ $8); `basic-search` gives the architecture delta |
+| `rb-official` (2026 Q4 – 2027 H1) | L2 | `full` | ≥ 0.30 | ≥ 0.07 | ≥ 80% | official 4-stage scripts (statement → related-work → metrics) on the rb-100 reports |
 
-Ablation rows planned: `full-no-review` (reviewer + repair off),
-`full-no-citechain`, `full-no-rerank`, `full-no-corpus`,
-`full-budget-20/40/80`.
+Ablation rows planned on the 10-task subset: `full-no-snowball`
+(`snowball_hops: 0`), `full-no-datewindow`, `full-no-review` (reviewer +
+repair off), `full-no-citechain`, `full-budget-60/120`.
 
 Metric notes: `reference_precision/recall/f1` are deterministic (title /
 arXiv id / DOI match). `citation_match_rate` and `cited_statement_accuracy`
@@ -184,17 +184,17 @@ recall and analysis.
 |-----|-----|---|-------|--------|----------|--------------|----------------|--------------|--------|--------|
 | [`dr-v1-smoke10`](./deepresearch-bench-ii/results/dr-v1-smoke10/) | `full` | 10 | **10.7** | 8.1 | 7.1 | 30.1 | 0.76 | 2 tasks | 712 | 0.41 |
 
-- Rubric pass rates ×100, judged by Gemini 3.8 Flash with the official exact-number rule. The same 10 reports re-scored by the **official GPT-5.5 judge** (`run_evaluation.py`) give **13.6** (recall 10.3 · analysis 8.5 · presentation 34.6) — per-task Pearson r = 0.97 with the internal judge, which runs ~3 pp conservative ([details](./deepresearch-bench-ii/results/dr-v1-smoke10/)). Task language is enforced (zh tasks are answered in Chinese).
+- Rubric pass rates ×100, judged by Gemini 3.8 Flash with the official exact-number rule. The same 10 reports re-scored by the **official GPT-5.5 judge** (`run_evaluation.py`) give **13.6** (recall 10.3 · analysis 8.5 · presentation 34.6) — per-task Pearson r = 0.97 with the internal judge, which runs ~3 pp conservative ([details](./deepresearch-bench-ii/results/dr-v1-smoke10/)). The chart above plots the official-judge score, since that is the judge behind the leaderboard numbers. Task language is enforced (zh tasks are answered in Chinese).
 - Presentation rubrics are partly met; recall and analysis are not: the reports do not carry the specific figures, named entities and comparison-table rows the rubrics ask for, regardless of report length (4k–20k chars). Two tasks cited a blocked expert article through the Crossref path — that path is now filtered too.
 
 ### Projected — next runs
 
 | Run | Tier | Row | Total | Recall | Analysis | Presentation | Basis |
 |-----|------|-----|-------|--------|----------|--------------|-------|
-| `dr-v1` (planned 2026-10) | L1 (Gemini judge) | `basic-search` | ~40 | ~35 | ~45 | ~85 | single-pass search + report |
-| `dr-v1` | L1 (Gemini judge) | `full` | ≥ 50 | ≥ 45 | ≥ 55 | ≥ 90 | planner sub-question decomposition, iterative gap-filling retrieval, reviewer/repair |
-| `dr-v2` (planned 2026-12) | L1 | `full` + numeric-evidence quoting + blocked-source exclusion | ≥ 55 | ≥ 50 | ≥ 62 | ≥ 92 | atomic rubrics reward exact figures, units and dates |
-| `dr-official` (2027–2028) | L2 → L3 | `full` | **≥ 65** | ≥ 60 | ≥ 72 | ≥ 93 | official `run_evaluation.py`, GPT-5.5 judge; leaderboard submission by e-mail |
+| `dr-v2` (2026-10/11) | L1 (Gemini judge), same 10 tasks → 132 | `full` + fact ledger (sub-question → value / unit / year / source), request-structure-first composer, analysis paragraph per section | ≥ 30 | ≥ 25 | ≥ 25 | ≥ 60 | atomic rubrics reward exact figures, named entities and comparison-table rows; the dr-v1 reports carry none of these regardless of length |
+| `dr-v2` | L1 (Gemini judge) | `basic-search` | — | — | — | — | single-pass search + report; gives the architecture delta on the same tasks |
+| `dr-v3` (2026-12) | L1 → L2 (GPT-5.5 judge on the same reports) | `full` + WS1 retrieval (date window, snowballing) + web-statistics sources | ≥ 55 | ≥ 50 | ≥ 62 | ≥ 92 | internal ↔ official judge agreement (r = 0.97 on dr-v1) re-checked before any L2 number is quoted |
+| `dr-official` (2027) | L2 → L3 | `full` | **≥ 65** | ≥ 60 | ≥ 72 | ≥ 93 | official `run_evaluation.py`, GPT-5.5 judge; leaderboard submission by e-mail |
 
 Internal (Gemini) and official (GPT-5.5) judgements will be run on the same
 reports and their per-task agreement reported before any L2 number is quoted.

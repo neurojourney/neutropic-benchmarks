@@ -14,9 +14,11 @@ grader:
 
 rows:
   - {name: basic-search, policy: basic-search, provider: gemini}
-  - {name: full,         policy: full,         provider: gemini}
+  - {name: full,         policy: full,         provider: gemini}   # = product Deep; the adapter adds report_max_sources 120, snowball_hops 1 and the prompt date window (rb-v5)
+  - {name: full-basic,   policy: full-basic,   provider: gemini}   # pre-2026-09-14 full (no deep pass, reviewer not forced) — comparison only
   # component ablations — only meaningful on report-style benchmarks
   - {name: full-no-review,    policy: full, provider: gemini, overrides: {reviewer: false, repair: false}}
   - {name: full-no-citechain, policy: full, provider: gemini, overrides: {citation_chain: false}}
+  - {name: full-no-snowball,  policy: full, provider: gemini, overrides: {snowball_hops: 0}}
   # - {name: full-no-rerank, policy: full, provider: gemini, overrides: {rerank: false}}
   # - {name: full-no-corpus, policy: full, provider: gemini, overrides: {corpus: false}}

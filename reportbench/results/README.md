@@ -1,6 +1,9 @@
-No runs yet. Planned: `rb-v1` (2026-10, 10-task smoke then 100 tasks; rows basic-search / full / full-no-review / full-no-citechain), `rb-v2` (2026-12, citation snowballing + reference budget), `rb-official` (2027 H1, official scripts). See [../../README.md](../../README.md) for projected targets.
+Five 10-task smokes so far (rb-v1 → rb-v5, all on the first 10 of 100 tasks, `full` row, internal Gemini judge). Next: `rb-v6` (composer-side coverage + reference id fill, same 10 tasks), `rb-100` (all 100 tasks, `full` + `basic-search`), `rb-official` (official scripts on the rb-100 reports). See [../../README.md](../../README.md) for projected targets.
 
 | Run | Date | Rows | Notes |
 |-----|------|------|-------|
 | `rb-v1-smoke10` | 2026-09-13 | full | 10 of 100 tasks — P 0.116 / R 0.017 (first five P 0.22 / R 0.029; academic-DB rate limits degraded the rest), citation match 0.65, $0.34 · 840 s per task. Smoke only. |
 | `rb-v2-smoke10` | 2026-09-13/14 | full | same 10 tasks with a Semantic Scholar key, single container, larger HTTP budget — P 0.155 / R 0.026 over 8 scored tasks (2 lost their report to token expiry), $0.36 · 1,255 s per task. Smoke only. |
+| `rb-v3-smoke10` | 2026-09-14 | full (= product Deep, WS0) | same 10 tasks; deep pass + reviewer actually wired, in-task token refresh — all 10 scored, P 0.182 / R 0.033 / F1 0.055, citation match 0.78, cited acc. 0.89, $0.27 · 2,949 s per task. Four zero-score tasks (24 % of citations after the prompt's date cutoff). Smoke only. |
+| `rb-v4-smoke10` | 2026-09-15 | full + WS4 budget | same 10 tasks; per-host request gate + circuit breaker, 600 s research budget, figures off — P 0.169 / R 0.031 / F1 0.051 (within noise of v3), citation match 0.61, $0.21 · 1,424 s per task. OpenAlex fully unavailable (key-less daily allowance exhausted). Smoke only. |
+| `rb-v5-smoke10` | 2026-09-15 | full + WS1 recall | same 10 tasks; prompt date window enforced end-to-end (0 of 290 refs after cutoff), reference cap 120, 1-hop citation snowballing, OpenAlex key (0 × 429) — **P 0.287 / R 0.070 / F1 0.109**, citation match 0.69, cited acc. 0.85, every task > 0, $0.28 · 1,172 s per task. Smoke only. |

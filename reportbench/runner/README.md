@@ -12,7 +12,7 @@ parametric grader (`noncited_accuracy`, row-to-row comparison only).
 
 | File | Purpose |
 |------|---------|
-| `matrix_reportbench.yaml` | ablation ladder for `rb-v1` (basic-search / full / full-no-review / full-no-citechain) |
+| `matrix_reportbench.yaml` | ablation ladder (basic-search / full / full-no-review / full-no-citechain); `full` = product Deep preset; the adapter adds `report_max_sources: 120`, `snowball_hops: 1` and the prompt date window (rb-v5 configuration), `full-no-snowball` turns snowballing off |
 | `chart.json` · `chart.py` · `logos/` | data + sources behind `../chart.png`; `python chart.py` re-renders it (matplotlib). `logos/` holds 96 px brand marks (trademarks of their owners, used for identification only) |
 
 ## Data
@@ -30,8 +30,10 @@ python -m app.benchmarks.run --bench reportbench --data bench_data/ReportBench/R
   --policy full --provider gemini --grader-provider gemini --pause 10 --tag rb-v1
 ```
 
-Per task: one research turn (search fan-out → report → review → repair) plus
-≤ 40 grader calls. Budget roughly $0.5–1.5 and 5–15 min per task.
+Per task: one research turn (search fan-out → snowball → deep pass → report →
+review → repair) plus ≤ 40 grader calls. Measured on rb-v5: $0.28 and 20 min
+per task (max 38 min) with the WS4 request gate and 600 s research budget;
+100 tasks ≈ 33 h, ≈ $28 + OpenAlex ≈ $8.
 
 ## Official protocol (L2)
 
