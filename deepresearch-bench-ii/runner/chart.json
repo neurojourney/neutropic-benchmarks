@@ -29,14 +29,14 @@
     },
     {
       "system": "Neutropic",
-      "config": "smoke 10 · GPT-5.5 judge",
-      "value": 13.6,
+      "config": "dr-v7 · smoke 10 · GPT-5.5",
+      "value": 22.2,
       "highlight": true,
       "logo": "neutropic"
     }
   ],
   "sources": [
     "Official leaderboard https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html (2026-09)",
-    "Neutropic measured: ../results/dr-v1-smoke10/official-gpt55-vs-internal.json — overall rubric pass rate 0.136 (×100) on the first 10 of 132 tasks under the official GPT-5.5 judge (run_evaluation.py); internal Gemini judge on the same reports 0.107 (../results/dr-v1-smoke10/full.summary.json), per-task r = 0.97"
+    "Neutropic measured: ../results/dr-v7-smoke10/official-gpt55-vs-internal.json — overall rubric pass rate 0.222 (×100) on the first 10 of 132 tasks under the official GPT-5.5 judge (run_evaluation.py); internal Gemini judge on the same reports 0.192 (../results/dr-v7-smoke10/full.summary.json), per-task r = 0.73. dr-v1 (2026-09-14): 0.136 official / 0.107 internal"
   ]
 }

@@ -23,7 +23,7 @@ together track the agent's maturity from factual search to end-to-end science:
 > |-----------|--------------------|----------------|
 > | SimpleQA | 0.90 accuracy (subset 100) | 95.3 % |
 > | ReportBench | recall **0.070** · precision 0.287 · F1 0.109 (rb-v5, 10 tasks, date window + snowballing; rb-v3 0.033 / 0.182) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
-> | DeepResearch Bench II | 10.7 internal judge · **13.6 official GPT-5.5 judge** (10 tasks) | 64.38 |
+> | DeepResearch Bench II | **22.2 official GPT-5.5 judge** · 19.2 internal judge (dr-v7, 10 tasks; dr-v1 13.6 / 10.7) | 64.38 |
 > | AstaBench | LitQA2 accuracy 0.30 (10 questions, 1 of 11 tasks) | overall 58.0 % |
 
 ## Notes
@@ -182,16 +182,18 @@ recall and analysis.
 
 | Run | Row | n | Total | Recall | Analysis | Presentation | Citation match | blocked hits | s/item | $/item |
 |-----|-----|---|-------|--------|----------|--------------|----------------|--------------|--------|--------|
-| [`dr-v1-smoke10`](./deepresearch-bench-ii/results/dr-v1-smoke10/) | `full` | 10 | **10.7** | 8.1 | 7.1 | 30.1 | 0.76 | 2 tasks | 712 | 0.41 |
+| [`dr-v1-smoke10`](./deepresearch-bench-ii/results/dr-v1-smoke10/) | `full` | 10 | 10.7 | 8.1 | 7.1 | 30.1 | 0.76 | 2 tasks | 712 | 0.41 |
+| [`dr-v7-smoke10`](./deepresearch-bench-ii/results/dr-v7-smoke10/) | `full` + WS4/WS1/WS2 (fact ledger, fact hunt via open data APIs, request-structure composer) | 10 | **19.2** | 20.5 | 12.4 | 64.7 | 0.82 | 0 (official: 1 task) | 1827 | 0.31 |
 
-- Rubric pass rates ×100, judged by Gemini 3.8 Flash with the official exact-number rule. The same 10 reports re-scored by the **official GPT-5.5 judge** (`run_evaluation.py`) give **13.6** (recall 10.3 · analysis 8.5 · presentation 34.6) — per-task Pearson r = 0.97 with the internal judge, which runs ~3 pp conservative ([details](./deepresearch-bench-ii/results/dr-v1-smoke10/)). The chart above plots the official-judge score, since that is the judge behind the leaderboard numbers. Task language is enforced (zh tasks are answered in Chinese).
-- Presentation rubrics are partly met; recall and analysis are not: the reports do not carry the specific figures, named entities and comparison-table rows the rubrics ask for, regardless of report length (4k–20k chars). Two tasks cited a blocked expert article through the Crossref path — that path is now filtered too.
+- Rubric pass rates ×100, judged by Gemini 3.8 Flash with the official exact-number rule. The same reports re-scored by the **official GPT-5.5 judge** (`run_evaluation.py`): dr-v1 **13.6** (recall 10.3 · analysis 8.5 · presentation 34.6, r = 0.97 with the internal judge), dr-v7 **22.2** (recall 23.5 · analysis 16.1 · presentation 65.4, r = 0.73 — the internal judge over-credits one task) ([dr-v1](./deepresearch-bench-ii/results/dr-v1-smoke10/) · [dr-v7](./deepresearch-bench-ii/results/dr-v7-smoke10/)). The chart above plots the official-judge score, since that is the judge behind the leaderboard numbers. Task language is enforced (zh tasks are answered in Chinese).
+- dr-v1 → dr-v7 (2026-09-16, same 10 tasks): every task but one improved under the official judge; presentation went from 0.35 to 0.65 (request structure followed: parts, numbered items and tables as sub-headings), recall from 0.10 to 0.24 (fact ledger + fact hunt: 61 of 100 explicitly requested items found through Wikipedia / World Bank / web), analysis from 0.09 to 0.16. The remaining gap is gold-specific figures that live only in ministry press releases and entity lists the rubrics enumerate; no commercial search API is used (open/official data APIs only). Cost 2.5× longer per task (30 min) at a lower price ($0.31) than dr-v1.
 
 ### Projected — next runs
 
 | Run | Tier | Row | Total | Recall | Analysis | Presentation | Basis |
 |-----|------|-----|-------|--------|----------|--------------|-------|
-| `dr-v2` (2026-10/11) | L1 (Gemini judge), same 10 tasks → 132 | `full` + fact ledger (sub-question → value / unit / year / source), request-structure-first composer, analysis paragraph per section | ≥ 30 | ≥ 25 | ≥ 25 | ≥ 60 | atomic rubrics reward exact figures, named entities and comparison-table rows; the dr-v1 reports carry none of these regardless of length |
+| ~~`dr-v2`~~ → measured as `dr-v7` (2026-09-16) | L1 + official judge, same 10 tasks | `full` + fact ledger, fact hunt, request-structure composer | 22.2 (target ≥ 30) | 23.5 (≥ 25) | 16.1 (≥ 25) | 65.4 (≥ 60) | presentation and recall targets roughly met; analysis short — analysis rubrics ask for comparisons / causal claims the composer states without the rubric's specific figures |
+| `dr-v8` (2026-10) | L1 (Gemini judge), same 10 tasks → 132 | `full` + government statistics portals (NBS China, data.gov.in, IMF/OECD SDMX) in the fact hunt, entity-list enumeration per unit, analysis-with-figures rule | ≥ 32 | ≥ 30 | ≥ 25 | ≥ 70 | 39 % of ledger items still missing are ministry-release figures; list rubrics enumerate 10–15 entities where the reports name 4–6 |
 | `dr-v2` | L1 (Gemini judge) | `basic-search` | — | — | — | — | single-pass search + report; gives the architecture delta on the same tasks |
 | `dr-v3` (2026-12) | L1 → L2 (GPT-5.5 judge on the same reports) | `full` + WS1 retrieval (date window, snowballing) + web-statistics sources | ≥ 55 | ≥ 50 | ≥ 62 | ≥ 92 | internal ↔ official judge agreement (r = 0.97 on dr-v1) re-checked before any L2 number is quoted |
 | `dr-official` (2027) | L2 → L3 | `full` | **≥ 65** | ≥ 60 | ≥ 72 | ≥ 93 | official `run_evaluation.py`, GPT-5.5 judge; leaderboard submission by e-mail |
