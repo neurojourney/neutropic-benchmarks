@@ -1,0 +1,213 @@
+{
+ "per_task": [
+  {
+   "idx": 1,
+   "task": "task7",
+   "official": 0.3620689655172414,
+   "internal": 0.2931,
+   "dims": {
+    "recall": [
+     10,
+     26
+    ],
+    "analysis": [
+     7,
+     26
+    ],
+    "presentation": [
+     4,
+     6
+    ]
+   }
+  },
+  {
+   "idx": 2,
+   "task": "task1+",
+   "official": 0.11009174311926606,
+   "internal": 0.0917,
+   "dims": {
+    "recall": [
+     7,
+     87
+    ],
+    "analysis": [
+     1,
+     17
+    ],
+    "presentation": [
+     4,
+     5
+    ]
+   }
+  },
+  {
+   "idx": 3,
+   "task": "task51",
+   "official": 0.12048192771084337,
+   "internal": 0.0964,
+   "dims": {
+    "recall": [
+     5,
+     69
+    ],
+    "analysis": [
+     0,
+     8
+    ],
+    "presentation": [
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "idx": 4,
+   "task": "task2+",
+   "official": 0.05555555555555555,
+   "internal": 0.0694,
+   "dims": {
+    "recall": [
+     1,
+     53
+    ],
+    "analysis": [
+     0,
+     11
+    ],
+    "presentation": [
+     3,
+     8
+    ]
+   }
+  },
+  {
+   "idx": 5,
+   "task": "task52",
+   "official": 0.20833333333333334,
+   "internal": 0.1458,
+   "dims": {
+    "recall": [
+     0,
+     23
+    ],
+    "analysis": [
+     6,
+     20
+    ],
+    "presentation": [
+     4,
+     5
+    ]
+   }
+  },
+  {
+   "idx": 6,
+   "task": "task3+",
+   "official": 0.1744186046511628,
+   "internal": 0.093,
+   "dims": {
+    "recall": [
+     9,
+     64
+    ],
+    "analysis": [
+     2,
+     13
+    ],
+    "presentation": [
+     4,
+     9
+    ]
+   }
+  },
+  {
+   "idx": 7,
+   "task": "task53",
+   "official": 0.26666666666666666,
+   "internal": 0.1733,
+   "dims": {
+    "recall": [
+     18,
+     60
+    ],
+    "analysis": [
+     0,
+     10
+    ],
+    "presentation": [
+     2,
+     5
+    ]
+   }
+  },
+  {
+   "idx": 8,
+   "task": "task4",
+   "official": 0.09722222222222222,
+   "internal": 0.0556,
+   "dims": {
+    "recall": [
+     3,
+     55
+    ],
+    "analysis": [
+     0,
+     11
+    ],
+    "presentation": [
+     4,
+     6
+    ]
+   }
+  },
+  {
+   "idx": 9,
+   "task": "task4+",
+   "official": 0.19047619047619047,
+   "internal": 0.1746,
+   "dims": {
+    "recall": [
+     4,
+     13
+    ],
+    "analysis": [
+     2,
+     41
+    ],
+    "presentation": [
+     6,
+     9
+    ]
+   }
+  },
+  {
+   "idx": 10,
+   "task": "task54",
+   "official": 0.5373134328358209,
+   "internal": 0.3731,
+   "dims": {
+    "recall": [
+     24,
+     44
+    ],
+    "analysis": [
+     7,
+     17
+    ],
+    "presentation": [
+     5,
+     6
+    ]
+   }
+  }
+ ],
+ "official_mean": 0.21226286420883028,
+ "internal_mean": 0.15660000000000002,
+ "dims_official": {
+  "recall": 0.19047241550668786,
+  "analysis": 0.12424456461759187,
+  "presentation": 0.6486111111111111
+ },
+ "blocked_neg": 9,
+ "pearson_r": 0.9730468792088972
+}

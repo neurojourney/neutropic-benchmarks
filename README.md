@@ -25,7 +25,7 @@ together track the agent's maturity from factual search to end-to-end science:
 > |-----------|--------------------|----------------|
 > | SimpleQA | 0.90 accuracy (subset 100) | 95.3 % |
 > | ReportBench | recall **0.070** · precision 0.287 · F1 0.109 (rb-v5, 10 tasks, date window + snowballing; rb-v3 0.033 / 0.182) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
-> | DeepResearch Bench II | **22.2 official GPT-5.5 judge** · 19.2 internal judge (dr-v7, 10 tasks; dr-v1 13.6 / 10.7) | 64.38 |
+> | DeepResearch Bench II | **22.2 official GPT-5.5 judge** (dr-v7; dr-v11 21.2 flat; dr-v1 13.6) | 64.38 |
 > | AstaBench | LitQA2 accuracy 0.30 (10 questions, 1 of 11 tasks) | overall 58.0 % |
 
 ## Notes
@@ -186,6 +186,7 @@ recall and analysis.
 |-----|-----|---|-------|--------|----------|--------------|----------------|--------------|--------|--------|
 | [`dr-v1-smoke10`](./deepresearch-bench-ii/results/dr-v1-smoke10/) | `full` | 10 | 10.7 | 8.1 | 7.1 | 30.1 | 0.76 | 2 tasks | 712 | 0.41 |
 | [`dr-v7-smoke10`](./deepresearch-bench-ii/results/dr-v7-smoke10/) | `full` + WS4/WS1/WS2 (fact ledger, fact hunt via open data APIs, request-structure composer) | 10 | **19.2** | 20.5 | 12.4 | 64.7 | 0.82 | 0 (official: 1 task) | 1827 | 0.31 |
+| [`dr-v11-smoke10`](./deepresearch-bench-ii/results/dr-v11-smoke10/) | + table-cell hunt, repair-pass section guard, stricter internal judge (evidence quote) | 10 | 15.7 † | 15.5 | 9.8 | 49.0 | — | 0 (official: 1 task, 9 items — brief pseudo-source) | 2040 | 0.29 |
 
 - Rubric pass rates ×100, judged by Gemini 3.8 Flash with the official exact-number rule. The same reports re-scored by the **official GPT-5.5 judge** (`run_evaluation.py`): dr-v1 **13.6** (recall 10.3 · analysis 8.5 · presentation 34.6, r = 0.97 with the internal judge), dr-v7 **22.2** (recall 23.5 · analysis 16.1 · presentation 65.4, r = 0.73 — the internal judge over-credits one task) ([dr-v1](./deepresearch-bench-ii/results/dr-v1-smoke10/) · [dr-v7](./deepresearch-bench-ii/results/dr-v7-smoke10/)). The chart above plots the official-judge score, since that is the judge behind the leaderboard numbers. Task language is enforced (zh tasks are answered in Chinese).
 - dr-v1 → dr-v7 (2026-09-16, same 10 tasks): every task but one improved under the official judge; presentation went from 0.35 to 0.65 (request structure followed: parts, numbered items and tables as sub-headings), recall from 0.10 to 0.24 (fact ledger + fact hunt: 61 of 100 explicitly requested items found through Wikipedia / World Bank / web), analysis from 0.09 to 0.16. The remaining gap is gold-specific figures that live only in ministry press releases and entity lists the rubrics enumerate; no commercial search API is used (open/official data APIs only). Cost 2.5× longer per task (30 min) at a lower price ($0.31) than dr-v1.
@@ -197,6 +198,10 @@ recall and analysis.
 | dr-v1 | 2026-09-13 | production core as shipped | 13.6 | 10.3 | 8.5 | 34.6 | 10.7 |
 | dr-v2 … dr-v6 | 2026-09-15 | WS2 iterations (fact ledger, request structure, brief as source, fact hunt) — 3–5 tasks each, internal judge only, not stored | — | — | — | — | 10.4 → 12.4 |
 | dr-v7 | 2026-09-16 | + open-data fact hunt (Wikipedia, World Bank), WS4 budgets, WS1 date window / snowballing | **22.2** | 23.5 | 16.1 | 65.4 | 19.2 |
+| dr-v8 … dr-v10 | 2026-09-16 | table-cell hunt iterations; each stopped after 1–5 tasks on a defect (summary re-added by repair pass; filled cells lost in section rewrite) — not stored | — | — | — | — | — |
+| dr-v11 | 2026-09-16 | + table-cell hunt after both report paths, repair-pass section guard, exhaustive list hunt, analysis rule | 21.2 | 19.0 | 12.4 | 64.9 | 15.7 † |
+
+† dr-v11's internal judge requires a verbatim evidence quote (r = 0.97 with the official judge; dr-v7's 0.73) — its numbers are not comparable with earlier internal columns. dr-v11 vs dr-v7 under the official judge is flat within task variance (+0.16 / −0.18 swings on single tasks); nine −1 items came from citing the research-brief pseudo-source, fixed for the next run.
 
 What the dr-v7 official verdicts say is still missing (≈ 460 failed rubrics): comparison-table rows left as "not provided by collected sources" (task2+ 40 cells, task4+ 26) although the study is named — the rubrics want author / year / market / method / figure per row; entity lists with 4–6 of the 10–15 items the rubrics enumerate; analysis claims (causal / comparative statements) absent as a whole; three tasks lost a "exactly two parts" rubric to an inserted summary section; two −1 items for a same-title paper reached through a different DOI.
 
