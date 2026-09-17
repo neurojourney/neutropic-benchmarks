@@ -35,14 +35,14 @@
     },
     {
       "system": "Neutropic",
-      "config": "LitQA2 only · 10-task smoke",
-      "value": 30.0,
+      "config": "LitQA2 only · litqa2-v2 · 10q",
+      "value": 40.0,
       "highlight": true,
       "logo": "neutropic"
     }
   ],
   "sources": [
     "Ai2 AstaBench leaderboard update https://allenai.org/blog/astabench-update-spring-2026 (2026-04)",
-    "Neutropic measured: ../results/litqa2-smoke10/scores.json — LitQA2 accuracy 0.30 on 10 questions (1 of 11 AstaBench tasks, custom-tools track, public split); not an overall score"
+    "Neutropic measured: ../results/litqa2-v2/scores.json — LitQA2 accuracy 0.40 on 10 questions (1 of 11 AstaBench tasks, custom-tools track, public split; litqa2-smoke10 0.30); not an overall score"
   ]
 }

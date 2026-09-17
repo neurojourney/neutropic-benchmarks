@@ -1,0 +1,82 @@
+{
+ "scores": {
+  "n": 10,
+  "accuracy": 0.4,
+  "precision": 1.0,
+  "coverage": 0.4,
+  "cost_usd_total": 2.49,
+  "seconds_total": 2946
+ },
+ "samples": [
+  {
+   "id": "27234279",
+   "q": "Approximately how many unique transposable element insertion loci are there in the mandari",
+   "correct": "I",
+   "sure": false,
+   "answer": "C"
+  },
+  {
+   "id": "2c05315d",
+   "q": "Are enhancer and promoter sequences broadly compatible in human cells, and is this the sam",
+   "correct": "C",
+   "sure": true,
+   "answer": "E"
+  },
+  {
+   "id": "39129e1c",
+   "q": "Among Cas9-disrupted loci in human neural stem cells, what fraction of disruption phenotyp",
+   "correct": "C",
+   "sure": true,
+   "answer": "B"
+  },
+  {
+   "id": "517e7cf8",
+   "q": "Approximately what percentage of Drosophila with a H3.3K36R mutation finish developing and",
+   "correct": "I",
+   "sure": false,
+   "answer": "E"
+  },
+  {
+   "id": "5c4c602c",
+   "q": "At which amino acid position is a large oligosaccharide density observed in the cryo-EM ma",
+   "correct": "C",
+   "sure": true,
+   "answer": "D"
+  },
+  {
+   "id": "76184ccf",
+   "q": "Active olfactory receptor genes increase their contacts with greek island regions by what ",
+   "correct": "I",
+   "sure": false,
+   "answer": "D"
+  },
+  {
+   "id": "c9bdb9b5",
+   "q": "Based on experiments done in cohorts of mice injected with B16-F10 melanoma cells expressi",
+   "correct": "I",
+   "sure": false,
+   "answer": "D"
+  },
+  {
+   "id": "cb710074",
+   "q": "Approximately what percentage of adr-1(-), adr-2(-), and adr-1(-);adr-2(-) mutant C. elega",
+   "correct": "I",
+   "sure": false,
+   "answer": "F"
+  },
+  {
+   "id": "e3b5a4af",
+   "q": "Acinetobacter lwoffii has been evolved in the lab to be resistant to which of these antibi",
+   "correct": "I",
+   "sure": false,
+   "answer": "D"
+  },
+  {
+   "id": "e6b0f9e5",
+   "q": "Based on single-nuclei RNA sequencing data, myotendinous junction myonuclei are enriched f",
+   "correct": "C",
+   "sure": true,
+   "answer": "E"
+  }
+ ]
+}

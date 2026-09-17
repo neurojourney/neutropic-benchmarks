@@ -26,7 +26,7 @@ together track the agent's maturity from factual search to end-to-end science:
 > | SimpleQA | 0.90 accuracy (subset 100) | 95.3 % |
 > | ReportBench | recall **0.070** · precision 0.287 · F1 0.109 (rb-v5, 10 tasks, date window + snowballing; rb-v3 0.033 / 0.182) | recall 0.036 (Gemini DR) · precision 0.385 (OpenAI DR) |
 > | DeepResearch Bench II | **22.2 official GPT-5.5 judge** (dr-v7; dr-v11 21.2 flat; dr-v1 13.6) | 64.38 |
-> | AstaBench | LitQA2 accuracy 0.30 (10 questions, 1 of 11 tasks) | overall 58.0 % |
+> | AstaBench | LitQA2 accuracy **0.40** (litqa2-v2, 10 questions, 1 of 11 tasks; v1 0.30) | overall 58.0 % |
 
 ## Notes
 
@@ -247,10 +247,11 @@ Leaderboard reference points (Ai2, 2026-04 update):
 
 | Run | Task | Track | n | Accuracy | Precision | Coverage | $/item | s/item |
 |-----|------|-------|---|----------|-----------|----------|--------|--------|
-| [`litqa2-smoke10`](./astabench/results/litqa2-smoke10/) | `litqa2` (LAB-bench, public split) | custom tools (Neutropic retrieval) | 10 | **0.30** | 1.00 | 0.30 | 0.22 | 123 |
+| [`litqa2-smoke10`](./astabench/results/litqa2-smoke10/) | `litqa2` (LAB-bench, public split) | custom tools (Neutropic retrieval) | 10 | 0.30 | 1.00 | 0.30 | 0.22 | 123 |
+| [`litqa2-v2`](./astabench/results/litqa2-v2/) | same 10 questions | + exact-term probe (phrase search + PMC full text), 14-step cap | 10 | **0.40** | 1.00 | 0.40 | 0.25 | 295 |
 
 - Run through the official `asta-bench` harness (Inspect) with the official `score_litqa2` scorer; Neutropic is wrapped as an Inspect solver that calls the headless solve service (`astabench/runner/solver/`).
-- Every sure answer was correct (precision 1.0); the agent answered "Insufficient information" on 6 of 10 questions whose key paper its searches did not surface, and one reply lacked the final-letter line. Not comparable to the overall leaderboard score; the validation split (gated HF dataset) and the standard-tools track (`ASTA_TOOL_KEY`) are still to do.
+- Every sure answer was correct (precision 1.0). litqa2-v2 (2026-09-17): the exact-term probe surfaces the key paper in most questions, but four of the six remaining "insufficient" answers said the figure was in the full text the tool could not show — tool observations over 4,000 characters are spilled, so a 60k-character paper appeared as its introduction; fixed for the next run with `fetch_page(url, query=…)` passage selection and a probe that runs before the first search. In litqa2-smoke10 the agent answered "Insufficient information" on 6 of 10 questions whose key paper its searches did not surface, and one reply lacked the final-letter line. Not comparable to the overall leaderboard score; the validation split (gated HF dataset) and the standard-tools track (`ASTA_TOOL_KEY`) are still to do.
 
 ### Projected — next runs
 
